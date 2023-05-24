@@ -1,0 +1,20 @@
+# regular
+.DS_Store
+.java-version
+/simulation
+
+# executable
+*.class
+*.o
+*.exe
+
+# input/output
+in
+out
+*.in
+*.out
+
+# special
+**/test_cases/**
+*.zip
+
