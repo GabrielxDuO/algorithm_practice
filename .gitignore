@@ -1,6 +1,6 @@
 # regular
-.DS_Store
-.java-version
+**/.DS_Store
+**/.java-version
 /simulation
 
 # executable
@@ -13,8 +13,11 @@ in
 out
 *.in
 *.out
+*.in*
+*.out*
 
 # special
-**/test_cases/**
+**/test_cases
 *.zip
+**/tempCodeRunnerFile*
 
