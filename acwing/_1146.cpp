@@ -31,6 +31,7 @@ int main() {
     scanf("%d", &n);
     for (int u = 1; u <= n; ++u) {
         int v; scanf("%d", &v);
+        // 从超级源点0向所有顶点连一条边 表示建发电机的费用
         g[0][u] = g[u][0] = v;
     }
     for (int i = 1; i <= n; ++i) {
