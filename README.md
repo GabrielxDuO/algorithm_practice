@@ -1,2 +1,3 @@
-# algorithm_practice
-Algorithm Practices(using Java / C++).
+# Algorithm Practice
+
+Algorithm Practice with Java & C++.
