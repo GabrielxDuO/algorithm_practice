@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class L2_001 {
+public class _001 {
     static final int INF = 0x3f3f3f3f;
     static int n, m, s, d;
     static int[] w1;
