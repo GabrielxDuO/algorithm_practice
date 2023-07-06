@@ -36,7 +36,7 @@ int main() {
         }
     }
     int winner; scanf("%d", &winner);
-    if (prevs[0] < winner) {
+    if (prevs[0] <= winner) {
         for (int i = 0; i < 1 << k; ++i) {
             if (i) printf(" ");
             printf("%d", !ans[i] ? winner : ans[i]);
