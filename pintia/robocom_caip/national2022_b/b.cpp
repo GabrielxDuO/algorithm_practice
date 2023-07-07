@@ -73,6 +73,5 @@ int main() {
         cout << (que.empty() ? "\n" : " ");
     }
 
-
     return 0;
 }
