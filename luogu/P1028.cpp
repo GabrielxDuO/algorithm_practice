@@ -1,19 +1,21 @@
-#include <iostream>
-#include <cstring>
+#include <cstdio>
 
 using namespace std;
 
-const int N = 1010;
+typedef long long LL;
+
+const int N = 1e3 + 10;
+LL f[N];
 int n;
-int f[N];
 
 int main() {
     scanf("%d", &n);
-    for (int i = 1; i <= n; ++i) {
-        f[i] = 1;
-        for (int j = 1; j <= i / 2; ++j) f[i] += f[j];
+    for (int x = 1; x <= n; ++x) {
+        f[x] = 1LL;
+        for (int y = x / 2; y >= 1; --y) f[x] += f[y];
     }
-    printf("%d\n", f[n]);
+    
+    printf("%lld\n", f[n]);
 
     return 0;
 }

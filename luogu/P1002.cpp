@@ -1,32 +1,29 @@
-#include <iostream>
+#include <cstdio>
 #include <cstring>
 
 using namespace std;
 
 typedef long long LL;
 
-const int N = 30;
-const int DIRS[][2] = {{0, 0}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}};
-int tx, ty, hx, hy;
-bool g[N][N];
+const int N = 25;
+const int DIRS[][2] = {{0, 0}, {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}};
+int g[N][N];
 LL f[N][N];
+int n, m, mx, my, cnt = 0;
 
 LL dfs(int x, int y) {
-    if (x < 0 || x > tx || y < 0 || y > ty || g[x][y]) return 0;
-    if (~f[x][y]) return f[x][y];
-    LL cnt = dfs(x + 1, y) + dfs(x, y + 1);
-    return f[x][y] = cnt;
+    if (x > n || y > m || g[x][y]) return 0LL;
+    if (f[x][y]) return f[x][y];
+    if (x == n && y == m) return f[x][y] = 1LL;
+    return f[x][y] = dfs(x + 1, y) + dfs(x, y + 1);
 }
 
 int main() {
-    scanf("%d%d%d%d", &tx, &ty, &hx, &hy);
-    for (auto& DIR : DIRS) {
-        int nx = hx + DIR[0], ny = hy + DIR[1];
-        if (nx < 0 || nx > tx || ny < 0 || ny > tx) continue;
-        g[nx][ny] = true;
+    scanf("%d%d%d%d", &n, &m, &mx, &my);
+    for (auto DIR : DIRS) {
+        int nx = mx + DIR[0], ny = my + DIR[1];
+        if (nx >= 0 && nx <= n && ny >= 0 && ny <= m) g[nx][ny] = true;
     }
-    memset(f, -1, sizeof(f));
-    f[tx][ty] = 1;
     printf("%lld\n", dfs(0, 0));
 
     return 0;
