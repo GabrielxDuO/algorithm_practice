@@ -3,18 +3,44 @@
 
 using namespace std;
 
-int main() {
-    int N, C;
-    scanf("%d%d", &N, &C);
-    int nums[N];
-    for (int i = 0; i < N; ++i) scanf("%d", &nums[i]);
-    sort(nums, nums + N);
-    long long ans = 0;
-    for (int i = 0; i < N - 1; ++i) {
-        auto pr = equal_range(nums + i, nums + N, nums[i] + C);
-        ans += pr.second - pr.first;
+typedef long long LL;
+
+const int N = 2e5 + 10;
+int n, c, a[N];
+
+int left_bound(int x) {
+    int l = 0, r = n - 1;
+    while (l < r) {
+        int m = l + r >> 1;
+        if (a[m] >= x) r = m;
+        else l = m + 1;
     }
-    printf("%lld", ans);
+    return l;
+}
+
+int right_bound(int x) {
+    int l = 0, r = n - 1;
+    while (l < r) {
+        int m = l + r + 1 >> 1;
+        if (a[m] <= x) l = m;
+        else r = m - 1;
+    }
+    return r;
+}
+
+int main() {
+    scanf("%d%d", &n, &c);
+    for (int i = 0; i < n; ++i) scanf("%d", &a[i]);
+    sort(a, a + n);
+    LL ans = 0;
+    for (int i = 0; i < n; ++i) {
+        int A = a[i] + c;
+        int l = left_bound(A);
+        if (a[l] != A) continue;
+        int r = right_bound(A);
+        ans += r - l + 1;
+    }
+    printf("%lld\n", ans);
 
     return 0;
 }

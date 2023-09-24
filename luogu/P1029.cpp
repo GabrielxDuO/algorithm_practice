@@ -18,7 +18,7 @@ int main() {
     scanf("%d%d", &x, &y);
     int cnt = 0;
     for (int a = x; a <= y; ++a) {
-        int b = x * y / a;
+        int b = y / a * x;
         if (a * b != x * y) continue;
         if (gcd(a, b) == x && lcm(a, b) == y) ++cnt;
     }

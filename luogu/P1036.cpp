@@ -1,15 +1,16 @@
-#include <iostream>
+#include <cstdio>
 
 using namespace std;
 
-const int N = 30;
-int n, k, a[N];
+const int N = 25;
+int n, k;
+int a[N];
 int sum, cnt;
 
-bool is_prime(int x) {
-    if (x < 2) return false;
-    for (int i = 2; i <= x / i; ++i) {
-        if (x % i == 0) return false;
+bool is_prime(int n) {
+    if (n < 2) return false;
+    for (int x = 2; x <= n / x; ++x) {
+        if (n % x == 0) return false; 
     }
     return true;
 }
@@ -26,7 +27,6 @@ void dfs(int u, int st) {
         sum -= a[i];
     }
 }
-
 
 int main() {
     scanf("%d%d", &n, &k);
