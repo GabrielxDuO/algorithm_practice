@@ -1,22 +1,23 @@
-#include <iostream>
+#include <cstdio>
 
 using namespace std;
 
-const int N = 10010;
+typedef long long LL;
+
+const int N = 1e4 + 10;
 int n, m;
-int f[N];
+LL f[N];
 
 int main() {
     scanf("%d%d", &n, &m);
-    f[0] = 1;
+    f[0] = 1LL;
     for (int i = 0; i < n; ++i) {
-        int x;
-        scanf("%d", &x);
-        for (int j = m; j >= x; --j) {
-            f[j] += f[j - x];
+        int v; scanf("%d", &v);
+        for (int j = m; j >= v; --j) {
+            f[j] += f[j - v];
         }
     }
-    printf("%d\n", f[m]);
+    printf("%lld\n", f[m]);
 
     return 0;
 }
