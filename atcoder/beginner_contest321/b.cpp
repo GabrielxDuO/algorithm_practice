@@ -3,19 +3,24 @@
 
 using namespace std;
 
-const int N = 110;
-int n, x, a[N];
+int n, x;
 
 int main() {
     scanf("%d%d", &n, &x);
-    for (int i = 1; i < n; ++i) scanf("%d", &a[i]);
-    sort(a + 1, a + n);
-    int mid_sum = 0, tot;
-    for (int i = 2; i < n - 1; ++i) mid_sum += a[i];
+    int mn = 101, mx = -1;
+    int sum = 0;
+    for (int i = 1; i < n; ++i) {
+        int a; scanf("%d", &a);
+        mn = min(mn, a);
+        mx = max(mx, a);
+        sum += a;
+    }
+    sum = sum - mn - mx;
+    int tot;
     for (int i = 0; i <= 100; ++i) {
-        if (i < a[1]) tot = mid_sum + a[1];
-        else if (i > a[n - 1]) tot = mid_sum + a[n - 1];
-        else tot = mid_sum + i;
+        if (i < mn) tot = sum + mn;
+        else if (i > mx) tot = sum + mx;
+        else tot = sum + i;
         if (tot >= x) {
             printf("%d\n", i);
             return 0;
