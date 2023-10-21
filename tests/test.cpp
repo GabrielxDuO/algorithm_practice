@@ -1,32 +1,67 @@
-#include<bits/stdc++.h>
-#define ll long long
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cstring>
+#include<cmath>
+#include<queue>
 using namespace std;
-const unsigned mod=1e9+7;
-ll ksm(ll x,ll y){ll ret=1;while(y){if(y&1ll)ret=ret*x%mod;y>>=1ll;x=x*x%mod;}return ret;}//快速幂模板
-ll n,m,k,a[200010],cnt[200010],fac[200010],inv[200010];
-ll C(ll n,ll m){if(m>n||m<0)return 0;return fac[n]*inv[m]%mod*inv[n-m]%mod;}//组合数模板
-int main() 
+const int N=2e5;
+struct segment
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0),cout.tie(0);//关闭流同步
-    fac[0]=inv[0]=1;
-    for(int i=1;i<=200000;i++) fac[i]=fac[i-1]*i%mod;
-    for(int i=1;i<=200000;i++) inv[i]=ksm(fac[i],mod-2);//预处理组合数
-    int T;cin>>T;
+    int l,r;
+    segment() {}
+    bool operator < (const segment &x) const {return l==x.l?r<x.r:l<x.l;}
+}a[N+10];
+int c1[N*2+10],c2[N*2+10],n,m,t[N*2+10];
+void modify(int *c,int x,int d) {for(;x<=m;x+=x&-x) c[x]+=d;}
+int query(int *c,int x)
+{
+    int ans=0;
+    for(;x;x-=x&-x) ans+=c[x];
+    return ans;
+}
+int main()
+{
+    int T;
+    scanf("%d",&T);
     while(T--)
     {
-        cin>>n>>m>>k;
-        for(int i=1;i<=n;i++) cin>>a[i],cnt[a[i]]++;
-        for(int i=1;i<=n;i++) cnt[i]+=cnt[i-1];//前缀和
-        sort(a+1,a+n+1);//排序
-        ll ans=0;
-        for(int i=n;i>=1;i--)
+        int n;
+        scanf("%d",&n);
+        for(int i=1;i<=n;i++)
         {
-            if (a[i]>k) ans+=C(i-cnt[a[i]-k-1]-1,m-1),ans%=mod;//组合数计算
-            else ans+=C(i-1,m-1),ans%=mod;//为避免负下标RE而进行的特判
+            scanf("%d %d",&a[i].l,&a[i].r);
+            t[i*2-1]=a[i].l;
+            t[i*2]=a[i].r;
         }
-        cout<<ans<<'\n';
-        for(int i=1;i<=n;i++) cnt[i]=0;//多测记得要清零，不建议用memset
+        sort(a+1,a+n+1);
+        sort(t+1,t+n*2+1);
+        m=unique(t+1,t+n*2+1)-t-1;
+        for(int i=0;i<=m;i++)
+        {
+            c1[i]=0;
+            c2[i]=0;
+        }
+        for(int i=1;i<=n;i++)
+        {
+            a[i].l=lower_bound(t+1,t+m+1,a[i].l)-t;
+            a[i].r=lower_bound(t+1,t+m+1,a[i].r)-t;
+        }
+        int ans=0;
+        for(int i=1;i<=n;i++) modify(c2,a[i].l,1);
+        for(int i=1;i<=n;i++)
+        {
+            if (i == n) {
+                printf("%d - %d\n", query(c1,m), query(c1,a[i].l-1));
+            }
+            int lc = query(c1,m)-query(c1,a[i].l-1);
+            int rc = query(c2,a[i].r)-query(c2,a[i].l-1);
+            printf("%d %d\n", lc, rc);
+            ans=max(ans,lc+rc);
+            modify(c2,a[i].l,-1);
+            modify(c1,a[i].r,1);
+        }
+        printf("%d\n",n-ans);
     }
     return 0;
 }
