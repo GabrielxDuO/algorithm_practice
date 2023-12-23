@@ -18,7 +18,8 @@ bool cmp(const vector<int>& a, const vector<int>& b) {
     return false;
 }
 
-vector<int> sub(const vector<int>& a, const vector<int>& b) {
+vector<int> sub(const vector<int>& a, const vector<int>& b, bool neg = false) {
+    if (cmp(a, b)) return sub(b, a, true);
     vector<int> c(a.size());
     for (int i = 0, rem = 0; i < a.size(); ++i) {
         rem += a[i];
@@ -27,6 +28,7 @@ vector<int> sub(const vector<int>& a, const vector<int>& b) {
         rem = -(rem < 0);
     }
     while (c.size() > 1 && c.back() == 0) c.pop_back();
+    if (neg) c.back() = -c.back();
     return c;
 }
 
@@ -37,7 +39,7 @@ int main() {
     vector<int> a(n), b(m);
     for (int i = 0; i < n; ++i) a[i] = s1[n - i - 1] - '0';
     for (int i = 0; i < m; ++i) b[i] = s2[m - i - 1] - '0';
-    auto c = cmp(a, b) ? cout << '-', sub(b, a) : sub(a, b);
+    auto c = sub(a, b);
     for (int i = c.size() - 1; i >= 0; --i) cout << c[i];
 
     return 0;
