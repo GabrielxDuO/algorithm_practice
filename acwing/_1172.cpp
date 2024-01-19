@@ -1,51 +1,49 @@
 #include <cstdio>
-#include <cmath>
 #include <cstring>
-#include <queue>
+#include <cmath>
 
 using namespace std;
 
-const int N = 4e4 + 10, M = N * 2, K = (int) log2(N) + 1;
+const int N = 4e4 + 10, K = log2(N) + 2, INF = 0x3f3f3f3f;
 int n, m;
-int h[N], e[M], ne[M], idx;
-int dep[N], fa[N][K];
 int root;
+int h[N], e[N * 2], ne[N * 2], idx;
+int dep[N], fa[N][K];
+int que[N], hh, tt = -1;
 
 void add(int a, int b) {
     e[idx] = b, ne[idx] = h[a], h[a] = idx++;
 }
 
-void bfs() {
+void bfs(int u) {
     memset(dep, 0x3f, sizeof(dep));
-    dep[0] = 0, dep[root] = 1;
-    queue<int> que;
-    que.push(root);
-    while (!que.empty()) {
-        int u = que.front(); que.pop();
+    dep[0] = 0, dep[u] = 1;
+    que[++tt] = u;
+    while (hh <= tt) {
+        u = que[hh++];
         for (int i = h[u]; ~i; i = ne[i]) {
             int v = e[i];
-            if (dep[v] > dep[u] + 1) {
-                dep[v] = dep[u] + 1;
-                fa[v][0] = u;
-                for (int k = 1; k < K; ++k) {
-                    fa[v][k] = fa[fa[v][k - 1]][k - 1];
-                }
-                que.push(v);
+            if (dep[v] != INF) continue;
+            dep[v] = dep[u] + 1;
+            fa[v][0] = u;
+            for (int k = 1; k < K; ++k) {
+                fa[v][k] = fa[fa[v][k - 1]][k - 1];
             }
+            que[++tt] = v;
         }
     }
 }
 
 int lca(int a, int b) {
     if (dep[a] < dep[b]) swap(a, b);
-    for (int i = K - 1; i >= 0; --i) {
-        if (dep[fa[a][i]] >= dep[b]) a = fa[a][i];
+    for (int k = K - 1; k >= 0; --k) {
+        if (dep[fa[a][k]] >= dep[b]) a = fa[a][k];
     }
     if (a == b) return a;
-    for (int i = K - 1; i >= 0; --i) {
-        if (fa[a][i] != fa[b][i]) {
-            a = fa[a][i];
-            b = fa[b][i];
+    for (int k = K - 1; k >= 0; --k) {
+        if (fa[a][k] != fa[b][k]) {
+            a = fa[a][k];
+            b = fa[b][k];
         }
     }
     return fa[a][0];
@@ -54,20 +52,23 @@ int lca(int a, int b) {
 int main() {
     scanf("%d", &n);
     memset(h, -1, sizeof(h));
-    for (int i = 0; i < n; ++i) {
+    while (n--) {
         int a, b;
         scanf("%d%d", &a, &b);
-        if (b == -1) root = a;
+        if (b == -1) {
+            root = a;
+            continue;
+        }
         add(a, b), add(b, a);
     }
-    bfs();
+    bfs(root);
     scanf("%d", &m);
     while (m--) {
-        int a, b;
-        scanf("%d%d", &a, &b);
-        int anc = lca(a, b);
-        puts(anc == a ? "1" : (anc == b ? "2" : "0"));
+        int x, y;
+        scanf("%d%d", &x, &y);
+        int anc = lca(x, y);
+        puts(anc == x ? "1" : (anc == y ? "2" : "0"));
     }
-
+    
     return 0;
 }
