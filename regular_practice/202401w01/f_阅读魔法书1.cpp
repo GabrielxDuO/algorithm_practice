@@ -9,7 +9,6 @@ int n;
 char p[N];
 
 int main() {
-    freopen("in", "r", stdin);
     scanf("%s%d", s, &n);
     int ans = 0;
     while (n--) {
